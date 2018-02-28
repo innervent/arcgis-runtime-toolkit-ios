@@ -80,7 +80,6 @@ public class Compass: UIImageView {
     
     func compassTapped(){
         mapView.setViewpointRotation(0, completion: nil)
-        isHidden = autoHide
     }
     
     func animateCompass() {
