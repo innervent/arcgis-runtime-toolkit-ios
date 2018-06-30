@@ -11,26 +11,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import UIKit
 import ArcGIS
+import UIKit
 
 open class MapViewController: UIViewController {
-    
-    public let mapView = AGSMapView(frame: CGRect.zero)
-    
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        
-        mapView.frame = view.bounds
-        mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(mapView)
-    }
-    
-    override open func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    
-}
+  public let mapView = AGSMapView(frame: CGRect.zero)
 
+  open override func viewDidLoad() {
+    super.viewDidLoad()
+
+    mapView.frame = view.bounds
+    mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+    view.addSubview(mapView)
+  }
+
+  open override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
+}

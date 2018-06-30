@@ -14,45 +14,43 @@
 import UIKit
 
 open class TableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    
-    public var cellReuseIdentifier = "cell"
-    public var tableView = UITableView(frame: .zero)
-    
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+  public var cellReuseIdentifier = "cell"
+  public var tableView = UITableView(frame: .zero)
+
+  open override func viewDidLoad() {
+    super.viewDidLoad()
+
+    tableView.translatesAutoresizingMaskIntoConstraints = false
+    view.addSubview(tableView)
+
+    NSLayoutConstraint.activate([
+      tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+      tableView.topAnchor.constraint(equalTo: view.topAnchor),
+      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+    ])
+
+    tableView.delegate = self
+    tableView.dataSource = self
+    tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellReuseIdentifier)
+  }
+
+  open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return 0
+  }
+
+  open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    return UITableViewCell()
+  }
+
+  public func goBack(_ completion: (() -> Void)?) {
+    if let nc = navigationController {
+      nc.popViewController(animated: true)
+      completion?()
+    } else {
+      dismiss(animated: true) {
+        completion?()
+      }
     }
-    
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
-    }
-    
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
-    }
-    
-    public func goBack(_ completion: (()->Void)? ){
-        if let nc = navigationController{
-            nc.popViewController(animated: true)
-            completion?()
-        }
-        else{
-            self.dismiss(animated: true){
-                completion?()
-            }
-        }
-    }
+  }
 }

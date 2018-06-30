@@ -12,58 +12,50 @@
 // limitations under the License.
 
 internal class Coalescer {
-    
-    // Class to coalesce actions into intervals.
-    // This is helpful for the Scalebar because we get updates to the visibleArea up to 60hz and we
-    // don't need to redraw the Scalebar that often
-    
-    var dispatchQueue : DispatchQueue
-    var interval : DispatchTimeInterval
-    var action : (() -> Void)
-    
-    init (dispatchQueue: DispatchQueue, interval: DispatchTimeInterval, action: @escaping (()->Void)){
-        self.dispatchQueue = dispatchQueue
-        self.interval = interval
-        self.action = action
-    }
-    
-    private var count = 0
-    
-    func ping(){
-        
-        // synchronize to a serial queue, in this case main thread
-        if !Thread.isMainThread{
-            DispatchQueue.main.async{ self.ping() }
-            return
-        }
-        
-        // increment the count
-        count += 1
-        
-        // the first time the count is incremented, it dispatches the action
-        if count == 1{
-            dispatchQueue.asyncAfter(deadline: DispatchTime.now() + interval){
-                
-                // call the action
-                self.action()
-                
-                // reset the count
-                self.resetCount()
-            }
-        }
-        
-    }
-    
-    private func resetCount(){
-        
-        // synchronize to a serial queue, in this case main thread
-        if !Thread.isMainThread{
-            DispatchQueue.main.async{ self.count = 0 }
-        }
-        else{
-            self.count = 0
-        }
-    }
-    
-}
+  // Class to coalesce actions into intervals.
+  // This is helpful for the Scalebar because we get updates to the visibleArea up to 60hz and we
+  // don't need to redraw the Scalebar that often
 
+  var dispatchQueue: DispatchQueue
+  var interval: DispatchTimeInterval
+  var action: (() -> Void)
+
+  init(dispatchQueue: DispatchQueue, interval: DispatchTimeInterval, action: @escaping (() -> Void)) {
+    self.dispatchQueue = dispatchQueue
+    self.interval = interval
+    self.action = action
+  }
+
+  private var count = 0
+
+  func ping() {
+    // synchronize to a serial queue, in this case main thread
+    if !Thread.isMainThread {
+      DispatchQueue.main.async { self.ping() }
+      return
+    }
+
+    // increment the count
+    count += 1
+
+    // the first time the count is incremented, it dispatches the action
+    if count == 1 {
+      dispatchQueue.asyncAfter(deadline: DispatchTime.now() + interval) {
+        // call the action
+        self.action()
+
+        // reset the count
+        self.resetCount()
+      }
+    }
+  }
+
+  private func resetCount() {
+    // synchronize to a serial queue, in this case main thread
+    if !Thread.isMainThread {
+      DispatchQueue.main.async { self.count = 0 }
+    } else {
+      count = 0
+    }
+  }
+}
